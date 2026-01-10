@@ -265,7 +265,7 @@ this.platforms = {
 | 夸克网盘 | Cookie | ✅ | 扫码获取Cookie |
 | UC网盘 | Cookie | ✅ | CAS认证，获取Cookie |
 | UC网盘 | OAuth Token | ✅ | TV版OAuth流程，获取access_token |
-| 阿里云盘 | Cookie | ⚠️ | 已实现但暂时隐藏 |
+| 阿里云盘 | Cookie | ✅ | 扫码获取Cookie |
 | 115网盘 | Cookie | ✅ | 扫码获取Cookie |
 | 百度网盘 | Cookie | ✅ | 扫码获取Cookie |
 | 哔哩哔哩 | Cookie | ✅ | 扫码获取Cookie |
