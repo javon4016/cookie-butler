@@ -14,6 +14,9 @@ export class BilibiliPlatform extends BasePlatform {
      */
     async generateQRCode() {
         try {
+            // 预热获取基础 Cookie (buvid3, _uuid 等)
+            const preWarmedCookie = await this.preWarm();
+
             const response = await this.request({
                 method: 'GET',
                 url: this.getEndpoint('generateQR')
@@ -25,9 +28,10 @@ export class BilibiliPlatform extends BasePlatform {
 
             const { url, qrcode_key } = response.data.data;
 
-            // 创建会话数据
+            // 创建会话数据，包含预热的 Cookie
             const sessionKey = this.createSessionKey({
-                qrcode_key: qrcode_key
+                qrcode_key: qrcode_key,
+                preCookie: preWarmedCookie
             });
 
             // 生成二维码图片
@@ -53,7 +57,7 @@ export class BilibiliPlatform extends BasePlatform {
                 return this.createSuccessResponse({ status: STATUS.EXPIRED });
             }
 
-            const { qrcode_key } = sessionData;
+            const { qrcode_key, preCookie } = sessionData;
             
             const response = await this.request({
                 method: 'GET',
@@ -74,12 +78,15 @@ export class BilibiliPlatform extends BasePlatform {
             switch (code) {
                 case 0:
                     // 登录成功，从响应头获取 Cookie
-                    const cookies = response.headers['set-cookie'];
-                    const formattedCookies = formatCookies(cookies);
+                    const loginCookies = response.headers['set-cookie'];
+                    const formattedLoginCookies = formatCookies(loginCookies);
+                    
+                    // 合并预热 Cookie 和 登录 Cookie
+                    const finalCookie = (preCookie || '') + formattedLoginCookies;
                     
                     return this.createSuccessResponse({
                         status: STATUS.CONFIRMED,
-                        cookie: formattedCookies
+                        cookie: finalCookie
                     });
                     
                 case 86090:
@@ -99,6 +106,27 @@ export class BilibiliPlatform extends BasePlatform {
             
         } catch (error) {
             return this.createErrorResponse('检查状态失败: ' + error.message);
+        }
+    }
+
+    /**
+     * 预热获取基础 Cookie
+     * @private
+     */
+    async preWarm() {
+        try {
+            const response = await this.request({
+                method: 'GET',
+                url: 'https://www.bilibili.com/',
+                headers: {
+                    'User-Agent': this.getUserAgent()
+                }
+            });
+            const cookies = response.headers['set-cookie'] || [];
+            return formatCookies(cookies);
+        } catch (error) {
+            console.warn('[Bilibili] 预热基础 Cookie 失败:', error.message);
+            return '';
         }
     }
 }
