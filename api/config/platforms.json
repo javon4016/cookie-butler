@@ -122,6 +122,17 @@
         "device_gpu": "Adreno (TM) 550",
         "activity_rect": "{}"
       }
+    },
+    "bilibili": {
+      "name": "哔哩哔哩",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+      "endpoints": {
+        "generateQR": "https://passport.bilibili.com/x/passport-login/web/qrcode/generate",
+        "checkStatus": "https://passport.bilibili.com/x/passport-login/web/qrcode/poll"
+      },
+      "headers": {
+        "referer": "https://www.bilibili.com/"
+      }
     }
   },
   "common": {
