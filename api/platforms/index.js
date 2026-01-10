@@ -4,6 +4,7 @@ import { UCTokenPlatform } from './uc-token.js';
 import { AliPlatform } from './ali.js';
 import { Platform115 } from './115.js';
 import { BaiduPlatform } from './baidu.js';
+import { BilibiliPlatform } from './bilibili.js';
 
 /**
  * 平台工厂类 - 负责创建和管理平台实例
@@ -17,7 +18,8 @@ class PlatformFactory {
             'uc_token': UCTokenPlatform,
             'ali': AliPlatform,
             '115': Platform115,
-            'baidu': BaiduPlatform
+            'baidu': BaiduPlatform,
+            'bilibili': BilibiliPlatform
         };
         
         // 实例缓存

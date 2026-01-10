@@ -11,7 +11,8 @@ let platformCookies = {
     'ali': '',
     'uc': '',
     'uc_token': '',
-    'baidu': ''
+    'baidu': '',
+    'bilibili': ''
 };
 
 // DOM元素
