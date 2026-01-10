@@ -110,6 +110,20 @@ export class BilibiliPlatform extends BasePlatform {
     }
 
     /**
+     * 生成模拟浏览器生成的 _uuid
+     * @private
+     */
+    generateUuid() {
+        const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+            const r = (Math.random() * 16) | 0;
+            const v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16).toUpperCase();
+        });
+        const timestamp = (Date.now() % 100000).toString().padStart(5, '0');
+        return `${uuid}${timestamp}infoc`;
+    }
+
+    /**
      * 预热获取基础 Cookie
      * @private
      */
@@ -123,10 +137,18 @@ export class BilibiliPlatform extends BasePlatform {
                 }
             });
             const cookies = response.headers['set-cookie'] || [];
-            return formatCookies(cookies);
+            let formattedCookies = formatCookies(cookies);
+            
+            // 手动补充 _uuid
+            if (!formattedCookies.includes('_uuid=')) {
+                formattedCookies += `_uuid=${this.generateUuid()}; `;
+            }
+            
+            return formattedCookies;
         } catch (error) {
             console.warn('[Bilibili] 预热基础 Cookie 失败:', error.message);
-            return '';
+            // 即使失败，也至少返回一个生成的 _uuid
+            return `_uuid=${this.generateUuid()}; `;
         }
     }
 }
