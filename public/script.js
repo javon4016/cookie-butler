@@ -50,6 +50,12 @@ function initializePage() {
 
     // 初始状态显示提示信息，加载当前平台的cookie
     loadPlatformCookie(currentPlatform);
+
+    // 默认选中第一个平台按钮
+    const firstBtn = document.querySelector(`.btn-scan[data-platform="${currentPlatform}"]`);
+    if (firstBtn) {
+        firstBtn.classList.add('active');
+    }
     // updateStatus('点击二维码或平台按钮开始扫码', 'info');
 }
 
@@ -73,7 +79,9 @@ function switchPlatform(platform, clickedBtn) {
 
     // 显示失效二维码和提示信息，不自动生成新二维码
     qrcodeImg.src = './shixiao.jpg';
-    // updateStatus('点击二维码开始扫码', 'info');
+
+    // 重置状态指示器
+    updateStatus('点击二维码开始扫码', 'info');
 }
 
 // 刷新二维码
@@ -214,8 +222,11 @@ function startPolling() {
     // 30秒后超时
     timeoutTimer = setTimeout(() => {
         clearPolling();
-        updateStatus('二维码已过期，请刷新', 'error');
         qrcodeImg.src = './shixiao.jpg';
+        // 延迟更新状态，确保在 clearPolling 之后执行
+        setTimeout(() => {
+            updateStatus('二维码已过期，请刷新', 'error');
+        }, 100);
     }, 30000);
 }
 
@@ -295,9 +306,23 @@ function updateStatusIndicator(message, type) {
 function showToast(message, type = 'success') {
     const toast = document.getElementById('toast');
     const toastContent = document.getElementById('toast-content');
+    const toastDot = document.getElementById('toast-dot');
 
     if (toast && toastContent) {
         toastContent.textContent = message;
+
+        // 根据类型设置指示点颜色
+        if (toastDot) {
+            toastDot.className = 'w-2 h-2 rounded-full transition-colors duration-200';
+            if (type === 'error') {
+                toastDot.classList.add('bg-red-400');
+                toastDot.style.boxShadow = '0 0 8px rgba(248,113,113,0.5)';
+            } else {
+                toastDot.classList.add('bg-green-400');
+                toastDot.style.boxShadow = '0 0 8px rgba(74,222,128,0.5)';
+            }
+        }
+
         toast.style.display = 'block';
 
         // 3秒后隐藏
