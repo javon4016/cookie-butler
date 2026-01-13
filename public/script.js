@@ -19,7 +19,7 @@ let platformCookies = {
 const qrcodeImg = document.getElementById('qrcode');
 const qrcodeOverlay = document.getElementById('qrcode-overlay');
 const cookieResult = document.getElementById('cookie-result');
-const statusMessage = document.getElementById('status-message');
+// const statusMessage = document.getElementById('status-message'); // Removed
 const scanBtns = document.querySelectorAll('.btn-scan');
 
 // 初始化
@@ -50,7 +50,7 @@ function initializePage() {
 
     // 初始状态显示提示信息，加载当前平台的cookie
     loadPlatformCookie(currentPlatform);
-    updateStatus('点击二维码或平台按钮开始扫码', 'info');
+    // updateStatus('点击二维码或平台按钮开始扫码', 'info');
 }
 
 // 切换平台
@@ -73,7 +73,7 @@ function switchPlatform(platform, clickedBtn) {
 
     // 显示失效二维码和提示信息，不自动生成新二维码
     qrcodeImg.src = './shixiao.jpg';
-    updateStatus('点击二维码开始扫码', 'info');
+    // updateStatus('点击二维码开始扫码', 'info');
 }
 
 // 刷新二维码
@@ -242,8 +242,13 @@ function showLoading(show) {
 
 // 更新状态消息
 function updateStatus(message, type) {
-    statusMessage.textContent = message;
-    statusMessage.className = `status-message ${type}`;
+    // 仅在控制台记录日志，不再显示到底部文本区域
+    console.log(`[Status-${type}]: ${message}`);
+
+    // 如果是错误信息，通过 Toast 显示
+    if (type === 'error') {
+        showToast(message, 'error');
+    }
 }
 
 // 显示Toast通知

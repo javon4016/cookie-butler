@@ -71,3 +71,4 @@ ehthumbs.db
 yarn.lock
 *.js.map
 debug.log
+.ace-tool/
