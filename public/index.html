@@ -44,7 +44,7 @@
 <body class="bg-ios-bg text-ios-black min-h-screen flex items-center justify-center p-4 selection:bg-ios-blue selection:text-white">
 
 <!-- 主玻璃容器 -->
-<div class="relative w-full max-w-[420px] bg-ios-card backdrop-blur-[50px] rounded-[40px] shadow-glass p-8 transition-all duration-500 ease-out border border-white/20">
+<div class="glass-container relative w-full max-w-[420px] bg-ios-card backdrop-blur-[50px] rounded-[40px] shadow-glass p-8 transition-all duration-500 ease-out border border-white/20">
     
     <!-- 顶部状态栏模拟 -->
     <div class="absolute top-0 left-0 w-full h-6 flex justify-center items-center opacity-30 pointer-events-none">
@@ -73,9 +73,9 @@
         <div class="relative bg-white p-4 rounded-[20px] shadow-sm border border-black/5">
             <img id="qrcode" src="./shixiao.jpg" alt="扫码区域" class="w-40 h-40 object-cover rounded-xl opacity-90 transition-opacity duration-300 hover:opacity-100"/>
             
-            <!-- 覆盖层 -->
-            <div id="qrcode-overlay" class="absolute inset-0 bg-white/90 backdrop-blur-sm rounded-[20px] hidden flex-col items-center justify-center z-10 transition-all duration-300">
-                <div class="w-8 h-8 border-3 border-ios-blue/30 border-t-ios-blue rounded-full animate-spin mb-3"></div>
+            <!-- 覆盖层 - 由 CSS 控制 display: none，JS 切换为 flex -->
+            <div id="qrcode-overlay" class="absolute inset-0 bg-white/90 backdrop-blur-sm rounded-[20px] flex-col items-center justify-center z-10 transition-all duration-300">
+                <div class="w-8 h-8 border-2 border-ios-blue/30 border-t-ios-blue rounded-full animate-spin mb-3"></div>
                 <span class="text-xs font-medium text-ios-gray tracking-wide">GENERATING...</span>
             </div>
         </div>

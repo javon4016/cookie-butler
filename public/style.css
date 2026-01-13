@@ -1,12 +1,13 @@
-/* 
-  Zen-iOS Hybrid Style 
-  Tailwind 已处理大部分样式，此处仅处理 JS 动态交互类和特定动画 
+/*
+  Zen-iOS Hybrid Style
+  Tailwind 已处理大部分样式，此处仅处理 JS 动态交互类和特定动画
 */
 
+/* 主容器入场动画 */
 @keyframes fade-in-up {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(16px);
     }
     to {
         opacity: 1;
@@ -14,20 +15,19 @@
     }
 }
 
+.glass-container {
+    animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 /* Tab 激活状态 - 模拟物理凸起 */
 .btn-scan.active {
     background-color: white;
     color: #1C1C1E;
-    box-shadow: 
+    box-shadow:
         0 4px 12px -2px rgba(0, 0, 0, 0.12),
         0 1px 1px rgba(0, 0, 0, 0.05);
     font-weight: 600;
 }
-
-/* 状态指示灯颜色映射 */
-.status-message.success ~ .status-indicator { background-color: #34C759; } /* iOS Green */
-.status-message.error ~ .status-indicator { background-color: #FF3B30; }   /* iOS Red */
-.status-message.info ~ .status-indicator { background-color: #007AFF; }    /* iOS Blue */
 
 /* 自定义滚动条 - 隐藏但可滚动 */
 textarea::-webkit-scrollbar {
@@ -35,7 +35,7 @@ textarea::-webkit-scrollbar {
     background: transparent;
 }
 
-/* 适配 script.js 的辅助类 (虽然我们在 HTML 里已经处理了大部分，但为了保险) */
-.qrcode-overlay {
-    display: none; /* 默认隐藏，由 JS 控制 display: flex */
+/* 默认隐藏，由 JS 控制 display: flex */
+#qrcode-overlay {
+    display: none;
 }

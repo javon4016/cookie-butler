@@ -242,12 +242,52 @@ function showLoading(show) {
 
 // 更新状态消息
 function updateStatus(message, type) {
-    // 仅在控制台记录日志，不再显示到底部文本区域
+    // 控制台记录日志
     console.log(`[Status-${type}]: ${message}`);
 
-    // 如果是错误信息，通过 Toast 显示
+    // 更新状态指示器 UI
+    updateStatusIndicator(message, type);
+
+    // 错误信息通过 Toast 显示
     if (type === 'error') {
         showToast(message, 'error');
+    }
+}
+
+// 更新状态指示器 (status-dot 和 status-text)
+function updateStatusIndicator(message, type) {
+    const statusDot = document.getElementById('status-dot');
+    const statusText = document.getElementById('status-text');
+
+    if (!statusDot || !statusText) return;
+
+    // 根据消息内容确定状态标签
+    let label = 'READY';
+    if (message.includes('生成')) label = 'GENERATING';
+    else if (message.includes('确认')) label = 'SCANNED';
+    else if (message.includes('等待扫码')) label = 'WAITING';
+    else if (message.includes('成功')) label = 'SUCCESS';
+    else if (message.includes('过期')) label = 'EXPIRED';
+    else if (message.includes('取消')) label = 'CANCELED';
+    else if (message.includes('请使用') || message.includes('扫码登录')) label = 'SCAN ME';
+    else if (type === 'error') label = 'ERROR';
+
+    statusText.textContent = label;
+
+    // 重置类名并设置新颜色
+    statusDot.className = 'w-2 h-2 rounded-full transition-colors duration-300';
+
+    switch(type) {
+        case 'success':
+            statusDot.classList.add('bg-green-500');
+            break;
+        case 'error':
+            statusDot.classList.add('bg-red-500');
+            break;
+        case 'info':
+        default:
+            statusDot.classList.add('bg-blue-500', 'animate-pulse');
+            break;
     }
 }
 
